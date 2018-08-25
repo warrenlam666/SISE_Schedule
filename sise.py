@@ -6,7 +6,7 @@ from icalendar import Calendar,Event
 import hashlib
 import datetime
 def schedule(username, password, year=2018, semester=1, openday=20180903):
-    """这是一个用于从sise系统导出ics格式的function
+    """这是一个用于从sise学生系统导出ics格式日历的程序
     
     :param username: sise学生系统用户名，即学号，类型为str 如：'1740123321'
     :param password: sise学生系统密码，类型为str 如：'123456789'
