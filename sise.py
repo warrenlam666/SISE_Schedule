@@ -29,15 +29,12 @@ def schedule(username, password, year=2018, semester=1, openday=20180903):
 
     #定义一个变量用于计数
     class_count=0
-    # 获取本机公网IP
-    ip = re.search('(?<=\[).*(?=\])',
-                   BeautifulSoup(request.urlopen('http://2018.ip138.com/ic.asp').read().decode('GBK'),
-                                 features='lxml').html.body.center.string).group(0)
 
     # 定义提交的数据form_data
+    getHash = BeautifulSoup(request.urlopen("http://class.sise.com.cn:7001/sise/login.jsp").read().decode("GBK"),
+                            features="lxml").select("input[type=hidden]")[0]
     form_data = {
-        (hashlib.md5(ip.encode()).hexdigest()): (
-            hashlib.md5('{}{}'.format(hashlib.md5(ip.encode()).hexdigest(), 'sise').encode()).hexdigest()),
+        getHash['name']: getHash['value'],
         'username': username,
         'password': password
     }
@@ -61,10 +58,12 @@ def schedule(username, password, year=2018, semester=1, openday=20180903):
     opener.addheaders = [('User-agent', 'Mozilla/5.0')]
     res = request.Request(url=login_url, data=form_data);
     req1 = opener.open(res)
+    print(req1.read().decode("GBK"))
     res2 = opener.open(
         'http://class.sise.com.cn:7001/sise/module/student_schedular/student_schedular.jsp?schoolyear={}&semester={}'.format(
             year, semester))
     soup = BeautifulSoup(res2.read().decode('GBK'), features='lxml')
+    print(soup)
     all_day = soup.html.body.form.find_all('table', recursive=False)[4].find_all('tr')[1:10]  # 长度为8
     for i in range(0, 8):
         all_day[i] = all_day[i].find_all('td')[0:9]
