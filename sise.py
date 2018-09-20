@@ -73,7 +73,7 @@ def schedule(username, password, year=2018, semester=1, openday=20180903):
 
     # 生成ics文件
 
-  
+
     # 输出上课时间段
     print('上课时间段如下：')
     for i in range(0, 8):
